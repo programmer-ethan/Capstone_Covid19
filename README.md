@@ -6,7 +6,9 @@ Capstone_Covid19_Risk_Factor
 2. Today's confirmed(Domestic/ Global)
 3. Government Policy
 4. Covid19 News
-
+- news scrap is in the cskim's file. but... about covid?!! auto search...? holymoly
+<br/><br/>
+- 2,3 scrap from govern site.
 ***
 Now I'm reading table in   
 [CDC data-population](https://www.cdc.gov/nchs/nvss/vsrr/covid_weekly/) to scrawl   because there are no csv data like that.
