@@ -8,10 +8,10 @@ Capstone_Covid19_Risk_Factor
 4. Covid19 News
 
 ***
-Now I'm reading table in
+Now I'm reading table in   
 [CDC data-population](https://www.cdc.gov/nchs/nvss/vsrr/covid_weekly/) to scrawl
-because there are no csv data like that.
-hello. this is amazing place!
+   because there are no csv data like that.
+   hello. this is amazing place!
 
 *HOLY MOLY it's greattttY!*
 
