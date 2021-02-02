@@ -2,7 +2,7 @@ Capstone_Covid19_Risk_Factor
 ================
 ### contents in web
 1. Covid19 risk factor
-<br/>if input some conditions   output risk rate & risk rank & recommended behaivior 
+- if input some conditions   output risk rate & risk rank & recommended behaivior 
 2. Today's confirmed(Domestic/ Global)
 3. Government Policy
 4. Covid19 News
