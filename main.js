@@ -5,24 +5,36 @@ var xml2js = require('xml2js');
 var request = require('request');
 var parser = new xml2js.Parser();
 var xml;
+var xml2;
 var url2 = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson';
 var queryParams = '?' + encodeURIComponent('ServiceKey') + '=2nuy9smlXsobMftqIaGHht8pOqn7MS9B2BCd7NSIH%2FveorG6I5JD0jzY9ceXUfsykoHTgyOKd3nqxVI%2BVPw0Pg%3D%3D'; /* Service Key*/
 queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
 queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
-queryParams += '&' + encodeURIComponent('startCreateDt') + '=' + encodeURIComponent('20200310'); /* */
-queryParams += '&' + encodeURIComponent('endCreateDt') + '=' + encodeURIComponent('20200315'); /* */
+queryParams += '&' + encodeURIComponent('startCreateDt') + '=' + encodeURIComponent('20210219'); /* */
+queryParams += '&' + encodeURIComponent('endCreateDt') + '=' + encodeURIComponent('20210228'); /* */
 request({
     url: url2 + queryParams,
     method: 'GET'
 }, function (error, response, body) {
-    console.log('Status', response.statusCode);
-    console.log('Headers', JSON.stringify(response.headers));
-    console.log('Reponse received', body);
+//     console.log('Status', response.statusCode);
+//     console.log('Headers', JSON.stringify(response.headers));
+//     console.log('Reponse received', body);
     xml=body
-    parser.parseString(xml, function (err, result) {
-      xml=result['response']['body']['items']
-      //['item']['0']['decideCnt']
-  });
+    console.log(xml)
+  //   parser.parseString(xml, function (err, result) {
+  //     xml2=result['decideCnt']
+  //     //['body']['items']['item']['0']['decideCnt']
+  // });
+  var doc = $.parseXML(xml);  
+  $eventItem = $(doc).find("item");  
+    
+  $eventItem.each(function(index, element) {   
+      alert("decideCnt: " + $(element).find('decideCnt').text());  
+  });  
+  $(doc).find('EventItem').each(function () {  
+      var cName;  
+      cName = $(this).children('decideCnt').text();   
+  });  
 });
 
 function templateHTML(title, list, body){//template
@@ -64,7 +76,7 @@ var app = http.createServer(function (request, response) {//create server.
         console.log(filelist);
         var title = "Welcome";
         // var description = "Hello, Node.js";
-        var description = xml;
+        var description = xml2;
         var list= templateList(filelist);
         var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
         response.writeHead(200);
