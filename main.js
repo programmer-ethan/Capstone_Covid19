@@ -1,8 +1,10 @@
 var http = require("http");
 var fs = require("fs");
 var url = require("url");
-
+var xml2js = require('xml2js');
 var request = require('request');
+var parser = new xml2js.Parser();
+var xml;
 var url2 = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson';
 var queryParams = '?' + encodeURIComponent('ServiceKey') + '=2nuy9smlXsobMftqIaGHht8pOqn7MS9B2BCd7NSIH%2FveorG6I5JD0jzY9ceXUfsykoHTgyOKd3nqxVI%2BVPw0Pg%3D%3D'; /* Service Key*/
 queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
@@ -16,9 +18,14 @@ request({
     console.log('Status', response.statusCode);
     console.log('Headers', JSON.stringify(response.headers));
     console.log('Reponse received', body);
+    xml=body
+    parser.parseString(xml, function (err, result) {
+      xml=result['response']['body']['items']
+      //['item']['0']['decideCnt']
+  });
 });
 
-function templateHTML(title, list, body){
+function templateHTML(title, list, body){//template
   return `
   <!DOCTYPE html>
   <html>
@@ -34,7 +41,7 @@ function templateHTML(title, list, body){
   </html>
   `;
 }
-function templateList(filelist){
+function templateList(filelist){//template for list
   var list = "<ul>";
   var i = 0;
   while (i < filelist.length) {
@@ -46,7 +53,7 @@ function templateList(filelist){
   return list;
 }
 
-var app = http.createServer(function (request, response) {
+var app = http.createServer(function (request, response) {//create server. 
   var _url = request.url;
   var queryData = url.parse(_url, true).query;
   var pathname = url.parse(_url, true).pathname;
@@ -56,7 +63,8 @@ var app = http.createServer(function (request, response) {
       fs.readdir("./data", function (error, filelist) {
         console.log(filelist);
         var title = "Welcome";
-        var description = "Hello, Node.js";
+        // var description = "Hello, Node.js";
+        var description = xml;
         var list= templateList(filelist);
         var template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`);
         response.writeHead(200);
@@ -82,4 +90,4 @@ var app = http.createServer(function (request, response) {
     response.end("Not found");
   }
 });
-app.listen(3000);
+app.listen(3000);//port 3000
