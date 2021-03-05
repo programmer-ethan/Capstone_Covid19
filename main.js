@@ -1,4 +1,4 @@
-var http = require("http");
+var http = require("http");//require는 뭐하는 건지...
 var fs = require("fs");
 var url = require("url");
 var xml2js = require('xml2js');
@@ -25,16 +25,18 @@ request({
   //     xml2=result['decideCnt']
   //     //['body']['items']['item']['0']['decideCnt']
   // });
-  var doc = $.parseXML(xml);  
-  $eventItem = $(doc).find("item");  
+  // var doc = $.parseXML(xml);  
+  // $eventItem = $(doc).find("item");  
     
-  $eventItem.each(function(index, element) {   
-      alert("decideCnt: " + $(element).find('decideCnt').text());  
-  });  
-  $(doc).find('EventItem').each(function () {  
-      var cName;  
-      cName = $(this).children('decideCnt').text();   
-  });  
+  // $eventItem.each(function(index, element) {   
+  //     alert("decideCnt: " + $(element).find('decideCnt').text());  
+  // });  
+  // $(doc).find('EventItem').each(function () {  
+  //     var cName;  
+  //     cName = $(this).children('decideCnt').text();   
+  // });
+  
+  
 });
 
 function templateHTML(title, list, body){//template
