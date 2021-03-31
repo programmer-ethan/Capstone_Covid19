@@ -1,0 +1,30 @@
+{
+  "name": "capstone_covid19",
+  "version": "1.0.0",
+  "description": "Covid Risk Factor",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/programmer-ethan/Capstone_Covid19.git"
+  },
+  "keywords": [
+    "Covid19",
+    "Risk",
+    "Factor"
+  ],
+  "author": "programmer-ethan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/programmer-ethan/Capstone_Covid19/issues"
+  },
+  "homepage": "https://github.com/programmer-ethan/Capstone_Covid19#readme",
+  "dependencies": {
+    "sanitize-html": "^2.3.3"
+  }
+}
