@@ -5,7 +5,6 @@ var qs = require('querystring');
 var template =require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml= require('sanitize-html');
-console.log('Hello');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -154,4 +153,5 @@ var app = http.createServer(function (request, response) {
     response.end("Not found");
   }
 });
+console.log('open at Port 3000');
 app.listen(3000); //포트번호지정
