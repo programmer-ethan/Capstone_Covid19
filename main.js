@@ -5,11 +5,19 @@ var qs = require('querystring');
 var template =require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml= require('sanitize-html');
+var pythonShell = require('python-shell');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
   var queryData = url.parse(_url, true).query;
   var pathname = url.parse(_url, true).pathname;
+  var options = {
+    mode: 'text',
+    pythonPath: '',
+    pythonOptions: ['-u'],
+    scriptPath: '',
+    args: ['value1', 'value2', 'value3']
+  };
 
   if (pathname === "/") {
     if (queryData.id === undefined) {
@@ -76,10 +84,6 @@ var app = http.createServer(function (request, response) {
     var body = "";
     request.on("data", function (data) {
       body += data;
-      // Too much POST data, kill the connection!
-      // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-      // if (body.length > 1e6)
-      //     request.connection.destroy();
     });
     request.on("end", function () {
       var post = qs.parse(body);
@@ -147,6 +151,50 @@ var app = http.createServer(function (request, response) {
         response.writeHead(302, { Location: `/` });
         response.end("");
       })
+    });
+  } else if (pathname === "/submit") {
+    fs.readdir("./data", function (error, filelist) {
+      var filteredId = path.parse(queryData.id).base;
+      fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
+        var title = queryData.id;
+        var list = template.list(filelist);
+        var html = template.HTML(
+          title,
+          list,
+          `
+            <form action="/update_process" method="post">
+            <input type="hidden" name="id" value="${title}">
+        <p><input type="text" name="title" placeholder="title" value="${title}"></p>
+        <p>
+          <textarea name="description" placeholder="description">${description}</textarea>
+        </p>
+        <p>
+          <input type="submit" />
+        </p>
+      </form>
+            `,
+          `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+        );
+        response.writeHead(200);
+        response.end(html);
+      });
+    });
+  }  else if (pathname === "/submit_process") {
+    var body = '';
+    request.on("data", function (data) {
+      body += data;
+    });
+    request.on("end", function () {
+      var post = qs.parse(body);
+      var id= post.id;
+      var title = post.title;
+      var description = post.description;
+      fs.rename(`data/${id}`,`data/${title}`, function(error){
+        fs.writeFile(`data/${title}`, description, "utf8", function (err) {
+        response.writeHead(302, { Location: `/?id=${title}` });
+        response.end("");
+        });
+      });
     });
   }else {
     response.writeHead(404);

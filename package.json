@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/programmer-ethan/Capstone_Covid19#readme",
   "dependencies": {
+    "python-shell": "^3.0.0",
     "sanitize-html": "^2.3.3"
   }
 }
