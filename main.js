@@ -27,7 +27,8 @@ var app = http.createServer(function (request, response) {
         var list = template.list(filelist);
         var html = template.HTML(title, list,
           `<h2>${title}</h2>${description}`,
-          `<a href="/create">create</a>`
+          `<a href="/create">create</a>
+          <a href="/submit">submit</a>`
         );
         response.writeHead(200);
         response.end(html);
@@ -60,7 +61,7 @@ var app = http.createServer(function (request, response) {
     }
   } else if (pathname === "/create") {
     fs.readdir("./data", function (error, filelist) {
-      var title = "WEB - create";
+      var title = "COVID-19 Risk Factor";
       var list = template.list(filelist);
       var html = template.HTML(
         title,
@@ -152,48 +153,19 @@ var app = http.createServer(function (request, response) {
         response.end("");
       })
     });
-  } else if (pathname === "/submit") {
-    fs.readdir("./data", function (error, filelist) {
-      var filteredId = path.parse(queryData.id).base;
-      fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
-        var title = queryData.id;
-        var list = template.list(filelist);
-        var html = template.HTML(
-          title,
-          list,
-          `
-            <form action="/update_process" method="post">
-            <input type="hidden" name="id" value="${title}">
-        <p><input type="text" name="title" placeholder="title" value="${title}"></p>
-        <p>
-          <textarea name="description" placeholder="description">${description}</textarea>
-        </p>
-        <p>
-          <input type="submit" />
-        </p>
-      </form>
-            `,
-          `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
-        );
-        response.writeHead(200);
-        response.end(html);
-      });
-    });
-  }  else if (pathname === "/submit_process") {
-    var body = '';
+  } else if (pathname === "/submit_process") {
+    var body = "";
     request.on("data", function (data) {
       body += data;
     });
+    consolelog(body);
     request.on("end", function () {
       var post = qs.parse(body);
-      var id= post.id;
-      var title = post.title;
-      var description = post.description;
-      fs.rename(`data/${id}`,`data/${title}`, function(error){
-        fs.writeFile(`data/${title}`, description, "utf8", function (err) {
-        response.writeHead(302, { Location: `/?id=${title}` });
+      var RiskFactor = post.RiskFactor;
+      consolelog(RiskFactor);
+      fs.writeFile(`data/${RiskFactor}`, "utf8", function (err) {
+        response.writeHead(302, { Location: `/?id=${RiskFactor}` });
         response.end("");
-        });
       });
     });
   }else {
