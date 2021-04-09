@@ -6,6 +6,7 @@ var template =require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml= require('sanitize-html');
 var pythonShell = require('python-shell');
+// var express = require('express');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -158,13 +159,13 @@ var app = http.createServer(function (request, response) {
     request.on("data", function (data) {
       body += data;
     });
-    consolelog(body);
+    console.log(body);
     request.on("end", function () {
       var post = qs.parse(body);
       var RiskFactor = post.RiskFactor;
-      consolelog(RiskFactor);
-      fs.writeFile(`data/${RiskFactor}`, "utf8", function (err) {
-        response.writeHead(302, { Location: `/?id=${RiskFactor}` });
+      console.log(RiskFactor);
+      fs.writeFile(`data/test`, "utf8", function (err) {
+        response.writeHead(302, { Location: `/?id=test` });
         response.end("");
       });
     });
